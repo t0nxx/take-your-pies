@@ -14,6 +14,9 @@ export class Pie {
     @Column()
     price: number;
 
+    @Column()
+    photoPath: string;
+
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;
 

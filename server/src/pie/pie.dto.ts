@@ -1,5 +1,6 @@
 import { IsNotEmpty, MinLength, MaxLength, IsOptional, Min } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class PieDto {
 
@@ -14,6 +15,9 @@ export class PieDto {
     description: string;
 
     @ApiModelProperty()
+    @Transform(id => parseInt(id))
     @Min(0)
     price: number;
+
+    photoPath: string;
 }

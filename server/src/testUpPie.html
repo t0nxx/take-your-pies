@@ -1,0 +1,16 @@
+<html>
+  <body>
+    <form ref='uploadForm' 
+      id='uploadForm' 
+      action='http://localhost:3001/pie/new' 
+      method='post' 
+      encType="multipart/form-data">
+     
+      price :     <input type="number" name="price" value="150"> <br>
+      name :     <input type="text" name="name" value="pie name"><br>
+      description :     <input type="text" name="description" value="pie description"><br>
+      <input type="file" name="file" >
+        <input type='submit' value='Upload!' />
+    </form>     
+  </body>
+</html>

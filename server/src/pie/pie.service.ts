@@ -1,9 +1,10 @@
-import { Injectable, HttpException, NotFoundException, BadRequestException } from '@nestjs/common';
-import { Repository, UpdateResult } from 'typeorm';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { Pie } from './pie.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PieDto } from './pie.dto';
 import { PieUpdateDto } from './pie.update.dto';
+import { QueryDto } from 'src/shared/query.filter';
 
 @Injectable()
 export class PieService {
@@ -13,9 +14,28 @@ export class PieService {
     ) { }
 
     /* get all pies */
-    async getAllPies(): Promise<any> {
-        const [data, count] = await this.pieRepository.findAndCount();
+    async getAllPies(query: QueryDto): Promise<any> {
+        const q = this.pieRepository.createQueryBuilder()
+            .take(query.limit)
+            .skip(query.page * (query.page - 1));
+
+        if (query.priceFrom) { q.andWhere('price >= ' + query.priceFrom); }
+
+        if (query.priceTo) { q.andWhere('price <= ' + query.priceTo); }
+
+        const [data, count] = await q.getManyAndCount();
         return { data, count };
+
+    }
+
+    /* get one pie */
+
+    async getOnePie(id: number): Promise<Pie> {
+        const findOne = await this.pieRepository.findOne(id);
+        if (!findOne) {
+            throw new NotFoundException('invalid id');
+        }
+        return findOne;
     }
 
     /* add new pie */

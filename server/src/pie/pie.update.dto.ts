@@ -8,7 +8,7 @@ export class PieUpdateDto {
     @MinLength(5)
     @MaxLength(50)
     name: string;
-    
+
     @ApiModelPropertyOptional()
     @IsOptional()
     description: string;
