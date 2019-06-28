@@ -19,5 +19,5 @@ export class PieDto {
     @Min(0)
     price: number;
 
-    photoPath: string;
+    photosPath: string[];
 }

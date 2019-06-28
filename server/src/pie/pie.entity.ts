@@ -14,8 +14,8 @@ export class Pie {
     @Column()
     price: number;
 
-    @Column()
-    photoPath: string;
+    @Column({ type: "simple-array" })
+    photosPath: string[];
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;

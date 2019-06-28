@@ -4,7 +4,7 @@ import { Pie } from './pie.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PieDto } from './pie.dto';
 import { PieUpdateDto } from './pie.update.dto';
-import { QueryDto } from 'src/shared/query.filter';
+import { QueryDto } from '../shared/query.filter';
 
 @Injectable()
 export class PieService {
