@@ -1,10 +1,12 @@
-import { Controller, Post, Get, Body, Put, Param, ParseIntPipe, Delete, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Post, Get, Body, Put, Param, ParseIntPipe, Delete, Query, UseInterceptors, UploadedFile, UploadedFiles } from '@nestjs/common';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { PieService } from './pie.service';
 import { PieDto } from './pie.dto';
 import { ApiUseTags, ApiImplicitParam, ApiConsumes, ApiImplicitFile, ApiImplicitBody } from '@nestjs/swagger';
 import { PieUpdateDto } from './pie.update.dto';
 import { QueryDto } from '../shared/query.filter';
+import { config } from 'dotenv';
+config();
 
 @ApiUseTags('pie')
 @Controller('pie')
@@ -23,23 +25,25 @@ export class PieController {
     }
 
     @Post('/new')
-    @UseInterceptors(FileInterceptor('file'))
-    //@ApiConsumes('multipart/form-data')
-    //@ApiImplicitFile({ name: 'file', required: true })
-    //@ApiImplicitBody({name : 'name' , type :PieDto})
+    @UseInterceptors(FilesInterceptor('files'))
+    // @ApiConsumes('multipart/form-data')
+    // @ApiImplicitFile({ name: 'file', required: true })
+    // @ApiImplicitBody({name : 'name' , type :PieDto})
     async createNewPie(
         @Body() newPie: PieDto,
-        @UploadedFile('file') file
+        @UploadedFiles() files: any[],
     ) {
         // thier is a problem with [Object: null prototype]
-        // it's body barser issue 
+        // it's body barser issue
         // solve
         newPie = JSON.parse(JSON.stringify(newPie));
-        newPie.photosPath = [] ;
-        newPie.photosPath.push(
-            'https://images.pexels.com/photos/989704/pexels-photo-989704.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-            'https://images.unsplash.com/photo-1535920527002-b35e96722eb9?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80'
-            );
+        newPie.photosPath = [];
+
+        if (files.length > 0) {
+            files.forEach(photo => {
+                newPie.photosPath.push(`${process.env.UPDIRENV}${photo.filename}`);
+            });
+        }
         return await this.pieService.creatNewPie(newPie);
     }
 

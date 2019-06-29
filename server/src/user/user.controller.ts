@@ -17,7 +17,7 @@ export class UserController {
 
     // @ApiImplicitParam({ name: 'id', type: Number })
     @ApiImplicitHeader({ name: 'authorization', required: true })
-    @Get('/:id')
+    @Get('/me')
     async getOneUser(@User('id') id) {
         return this.userService.getOneUser(id);
     }
@@ -29,7 +29,7 @@ export class UserController {
 
     // @ApiImplicitParam({ name: 'id', type: Number })
     @ApiImplicitHeader({ name: 'authorization', required: true })
-    @Put('/update/:id')
+    @Put('/update/me')
     async updateUser(
         @User('id') id,
         @Body() updateUserDto: UserUpdateDto,
@@ -38,7 +38,7 @@ export class UserController {
     }
 
     @ApiImplicitHeader({ name: 'authorization', required: true })
-    @Delete('/delete/:id')
+    @Delete('/delete/me')
     @ApiImplicitParam({ name: 'id' })
     async deletPie(@User('id') id) {
         return this.userService.deletUser(id);
