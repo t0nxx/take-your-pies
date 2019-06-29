@@ -34,9 +34,16 @@ export class UserService {
          we need to creat instance of entity first
         then assign the porps to it .
         */
-        const newUser = new User();
-        Object.assign(newUser, userDto);
-        return await this.userRepository.save(newUser);
+        try {
+            const newUser = new User();
+            Object.assign(newUser, userDto);
+            return await this.userRepository.save(newUser);
+        } catch (error) {
+            if (error.errno === 1062) {
+                throw new BadRequestException('email alreardy exist');
+            }
+        }
+
     }
 
     /* update user */

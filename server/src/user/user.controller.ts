@@ -1,8 +1,9 @@
 import { Controller, Get, Body, Param, ParseIntPipe, Post, Put, Delete } from '@nestjs/common';
-import { ApiUseTags, ApiImplicitParam } from '@nestjs/swagger';
+import { ApiUseTags, ApiImplicitParam, ApiImplicitHeaders, ApiImplicitHeader } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
 import { UserUpdateDto } from './user.update.dto';
+import { User } from './user.decorator';
 
 @ApiUseTags('users')
 @Controller('users')
@@ -14,9 +15,10 @@ export class UserController {
         return this.userService.getAllUsers();
     }
 
-    @ApiImplicitParam({ name: 'id', type: Number })
+    // @ApiImplicitParam({ name: 'id', type: Number })
+    @ApiImplicitHeader({ name: 'authorization', required: true })
     @Get('/:id')
-    async getOneUser(@Param('id', new ParseIntPipe()) id) {
+    async getOneUser(@User('id') id) {
         return this.userService.getOneUser(id);
     }
 
@@ -25,18 +27,20 @@ export class UserController {
         return this.userService.createNewUser(userDto);
     }
 
-    @ApiImplicitParam({ name: 'id', type: Number })
+    // @ApiImplicitParam({ name: 'id', type: Number })
+    @ApiImplicitHeader({ name: 'authorization', required: true })
     @Put('/update/:id')
     async updateUser(
-        @Param('id', new ParseIntPipe()) id,
-        @Body() updateUserDto: UserUpdateDto
+        @User('id') id,
+        @Body() updateUserDto: UserUpdateDto,
     ) {
         return await this.userService.updateUser(id, updateUserDto);
     }
 
+    @ApiImplicitHeader({ name: 'authorization', required: true })
     @Delete('/delete/:id')
     @ApiImplicitParam({ name: 'id' })
-    async deletPie(@Param('id', new ParseIntPipe()) id) {
+    async deletPie(@User('id') id) {
         return this.userService.deletUser(id);
     }
 

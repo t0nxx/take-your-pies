@@ -9,13 +9,16 @@ export class User {
     @Column()
     name: string;
 
+    @Column({ unique: true })
+    email: string;
+
     @Column()
     number: string;
 
     @Column()
     address: string;
 
-    @Column({select : false})
+    @Column({ /* select: false */ })
     password: string;
 
     @CreateDateColumn({ type: 'timestamp' })
