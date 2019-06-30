@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, BeforeInsert, BeforeUpdate } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, BeforeInsert, BeforeUpdate, OneToMany } from "typeorm";
 import { hashSync } from 'bcryptjs';
+import { Order } from '../order/order.entity';
 @Entity()
 export class User {
 
@@ -20,6 +21,9 @@ export class User {
 
     @Column({ /* select: false */ })
     password: string;
+
+    @OneToMany(type => Order, order => order.user)
+    orders: Order[] ;
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;

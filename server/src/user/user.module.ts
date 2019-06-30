@@ -8,7 +8,8 @@ import { UserAuthMiddleware } from '../auth/user.auth.middleware';
 @Module({
     imports: [TypeOrmModule.forFeature([User])],
     providers: [UserService],
-    controllers: [UserController]
+    controllers: [UserController],
+    exports : [UserService] /* for using in another module */
 })
 export class UserModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
