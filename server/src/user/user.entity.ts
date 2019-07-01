@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, BeforeInsert, BeforeUpdate, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, OneToMany } from 'typeorm';
 import { hashSync } from 'bcryptjs';
 import { Order } from '../order/order.entity';
+
+export enum UserRole {
+    ADMIN = 'admin',
+    EDITOR = 'editor',
+    USER = 'user',
+}
+
 @Entity()
 export class User {
 
@@ -23,7 +30,10 @@ export class User {
     password: string;
 
     @OneToMany(type => Order, order => order.user)
-    orders: Order[] ;
+    orders: Order[];
+
+    @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+    role: UserRole;
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;
@@ -35,6 +45,5 @@ export class User {
     async hashPass() {
         this.password = await hashSync(this.password, 10);
     }
-
 
 }

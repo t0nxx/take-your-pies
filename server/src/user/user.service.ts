@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { User } from './user.entity';
+import { User, UserRole } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserDto } from './user.dto';
@@ -64,7 +64,7 @@ export class UserService {
         return updated;
     }
 
-    /* get one user */
+    /* delete one user */
     async deletUser(id: number) {
         const findOne = await this.userRepository.findOne(id);
         if (!findOne) {
@@ -72,5 +72,26 @@ export class UserService {
         }
         await this.userRepository.delete(id);
         return 'done . user deleted';
+    }
+
+    /* promote User Level */
+    async promoteUserLevel(id: number, newRole: string) {
+        const findOne = await this.userRepository.findOne(id);
+        if (!findOne) {
+            throw new NotFoundException('invalid id');
+        }
+        switch (newRole) {
+            case 'ADMIN':
+                findOne.role = UserRole.ADMIN;
+                break;
+            case 'EDITOR':
+                findOne.role = UserRole.EDITOR;
+                break;
+            default:
+                findOne.role = UserRole.USER;
+                break;
+        }
+        await this.userRepository.save(findOne);
+        return 'done role upgraded';
     }
 }

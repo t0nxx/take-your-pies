@@ -1,5 +1,5 @@
 import { Controller, Get, Query, Post, Body } from '@nestjs/common';
-import { ApiUseTags } from '@nestjs/swagger';
+import { ApiUseTags, ApiImplicitHeader } from '@nestjs/swagger';
 import { CategoryService } from './category.service';
 import { CategoryDto } from './category.dto';
 
@@ -13,6 +13,7 @@ export class CategoryController {
         return this.categoryService.getAllCategories();
     }
 
+    @ApiImplicitHeader({ name: 'authorization', required: true })
     @Post('/new')
     async createNewUser(@Body() cate: CategoryDto) {
         return this.categoryService.creatNewCategory(cate);
