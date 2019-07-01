@@ -16,10 +16,11 @@ export class OrderModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(UserAuthMiddleware)
-      // .exclude({ path: 'orders', method: RequestMethod.GET })
+      .exclude({ path: 'orders', method: RequestMethod.GET })
       .forRoutes(
-        {path : 'orders/newOrder' , method : RequestMethod.POST},
-        {path : '/orders/myOrders' , method : RequestMethod.GET},
+        // {path : 'orders/newOrder' , method : RequestMethod.POST},
+        // {path : '/orders/myOrders' , method : RequestMethod.GET},
+        OrderController
       );
   }
 }

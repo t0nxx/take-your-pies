@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { Order } from './order.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 import { Pie } from '../pie/pie.entity';
 import { OrderItems } from './oderItems.entity';
 import { PaginationDto } from '../shared/pagination.filter';
@@ -15,7 +15,6 @@ export class OrderService {
         private readonly orderRepository: Repository<Order>,
         @InjectRepository(OrderItems)
         private readonly orderItemsRepository: Repository<OrderItems>,
-        // private readonly userService : UserService
     ) { }
 
     /* get all orders  // for admin */
@@ -29,12 +28,14 @@ export class OrderService {
         return { data, count };
     }
 
-    /* get one order // for admin */
+    /* get one order // for delivery boy */
     async getOneOrder(id: number): Promise<any> {
         const findOne = await this.orderRepository.createQueryBuilder('order')
-            .innerJoinAndSelect('order.user', 'user')
+            .innerJoin('order.user', 'user')
+            .addSelect(['user.id', 'user.number', 'user.name'])
             .innerJoinAndSelect('order.orderItems', 'order_items')
-            .innerJoinAndSelect('order_items.pie', 'pie')
+            .innerJoin('order_items.pie', 'pie')
+            .addSelect(['pie.id', 'pie.price', 'pie.name'])
             .where(`order.id = ${id}`)
             .getOne();
         if (!findOne) {

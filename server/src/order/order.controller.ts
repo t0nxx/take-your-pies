@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Delete, Body, Query, Param, ParseIntPipe } 
 import { ApiImplicitParam, ApiImplicitHeader, ApiUseTags } from '@nestjs/swagger';
 import { User } from '../user/user.decorator';
 import { OrderService } from './order.service';
-import { Pie } from 'src/pie/pie.entity';
+import { Pie } from '../pie/pie.entity';
 import { PaginationDto } from '../shared/pagination.filter';
 
 @ApiUseTags('orders')
@@ -15,8 +15,9 @@ export class OrderController {
         return this.orderService.getAllorders(query);
     }
 
-    @ApiImplicitParam({ name: 'id'})
-    @Get('/:id')
+    @ApiImplicitHeader({ name: 'authorization', required: true })
+    @ApiImplicitParam({ name: 'id' })
+    @Get('/oneOrder/:id')
     async getOneOrder(
         @Param('id', new ParseIntPipe()) id
     ) {

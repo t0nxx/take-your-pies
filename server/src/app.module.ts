@@ -6,10 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
+import { CategoryModule } from './category/category.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), PieModule, UserModule , AuthModule, OrderModule],
+  imports: [TypeOrmModule.forRoot(), PieModule, UserModule , AuthModule, OrderModule, CategoryModule],
   controllers: [AppController],
   providers: [AppService],
 })
