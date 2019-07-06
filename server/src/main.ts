@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.use(express.static(path.resolve(__dirname, '../uploads')));
-
+  app.enableCors();
   const options = new DocumentBuilder()
     .setTitle('Pie Doc')
     .setDescription('The Pie API description')

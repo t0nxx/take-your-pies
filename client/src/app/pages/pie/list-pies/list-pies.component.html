@@ -1,0 +1,6 @@
+<cdk-virtual-scroll-viewport itemSize="100" class="example-viewport" (scrolledIndexChange)="getNextPage($event)">
+  <div *cdkVirtualFor="let item of pies" class="example-item" style="margin-top: 10px;">
+    <img style="height: 500px;width: 500px;" src="{{item.photosPath[0]}}" alt="not loaded" />
+    <p>{{item.id}}</p>
+  </div>
+</cdk-virtual-scroll-viewport>

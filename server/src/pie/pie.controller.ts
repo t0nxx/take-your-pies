@@ -39,10 +39,12 @@ export class PieController {
         newPie = JSON.parse(JSON.stringify(newPie));
         newPie.photosPath = [];
 
-        if (files.length > 0) {
-            files.forEach(photo => {
-                newPie.photosPath.push(`${process.env.UPDIRENV}${photo.filename}`);
-            });
+        if (files) {
+            if (files.length > 0) {
+                files.forEach(photo => {
+                    newPie.photosPath.push(`${process.env.UPDIRENV}${photo.filename}`);
+                });
+            }
         }
         return await this.pieService.creatNewPie(newPie);
     }

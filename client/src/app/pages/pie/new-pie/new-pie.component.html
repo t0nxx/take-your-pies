@@ -1,0 +1,45 @@
+<form [formGroup]="pieForm" enctype="multipart/form-data" class="text-center border border-light p-5">
+
+  <div *ngIf="submit == true" class="alert alert-success" role="alert">
+    pie added done
+  </div>
+
+  <!-- /************* name *************/ -->
+  <div class="form-group">
+    <label for="name"> name</label>
+    <input formControlName="name" class="form-control" type="text">
+    <div *ngIf="name.invalid && name.touched " class="alert alert-danger alert-with-icon" role="alert">
+
+      <small *ngIf="name.errors?.required"> Please Enter Pie Name </small>
+      <small *ngIf="name.errors?.minlength"> Minlength must be at least 4 ,</small>
+    </div>
+  </div>
+
+
+
+  <!-- /************* description *************/ -->
+  <div class="form-group">
+    <label for="description"> description</label>
+    <input formControlName="description" class="form-control" type="text">
+  </div>
+
+  <!-- /************* price *************/ -->
+  <div class="form-group">
+    <label for="price"> price</label>
+    <input formControlName="price" class="form-control" type="number">
+    <div *ngIf="price.invalid && price.touched " class="alert alert-danger alert-with-icon" role="alert">
+
+      <small *ngIf="price.errors?.required"> Please Enter Pie price </small>
+      <small *ngIf="price.errors?.min"> Min must be at least 0 ,</small>
+    </div>
+  </div>
+
+  <input name="files" type="file" accept=".jpeg, .jpg, .png" (change)="onFileChange($event)" multiple>
+
+
+
+  <button (click)="onSubmit();  " [disabled]="!pieForm.valid" type="submit"
+    class="btn btn-primary">sign Up</button>
+
+</form>
+<!-- pieForm.reset() ; -->

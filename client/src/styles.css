@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+html, body {
+    min-height: 100vh;
+    min-width: 100vh;
+    height: auto;
+    
+    width: auto;
+    margin: 0;
+  }
